@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { object, string } from 'yup';
 import { selectContacts } from 'redux/selectors';
-import { addContact, fetchContacts } from 'redux/operations';
+import { addContact } from 'redux/operations';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -44,7 +44,6 @@ export function ContactForm() {
         phone: values.phone,
       };
       dispatch(addContact(newContact)).then(() => {
-        dispatch(fetchContacts());
         toast.success('Контакт успішно додано!', {
           position: 'top-right',
           autoClose: 3000,

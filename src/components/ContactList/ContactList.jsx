@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from './ContactList.styled';
 import {
-  getError,
-  getIsLoading,
   selectContacts,
+  selectError,
   selectFilter,
+  selectIsLoading,
 } from 'redux/selectors';
 import { deleteContact, fetchContacts } from 'redux/operations';
 import { useEffect } from 'react';
@@ -15,22 +15,19 @@ export const ContactList = () => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
   const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const filteredContacts = (contacts || []).filter(contact => {
-    const contactName = contact.name.toLowerCase();
-    const filterValue = filter.toLowerCase();
-    return contactName.includes(filterValue);
-  });
+  const filteredContacts = (contacts || []).filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const handleDeleteContact = id => {
     dispatch(deleteContact(id)).then(() => {
-      dispatch(fetchContacts());
       toast.success('Контакт успішно видалено!', {
         position: 'top-right',
         autoClose: 3000,
